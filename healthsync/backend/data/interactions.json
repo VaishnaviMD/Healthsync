@@ -1,0 +1,50 @@
+{
+  "iron": {
+    "medicineName": "Iron Supplements",
+    "avoid": ["Tea", "Coffee", "Milk/Dairy products", "Antacids", "High-fiber foods (when taken together)", "Calcium-rich foods"],
+    "recommended": ["Vitamin C foods (oranges, strawberries)", "Broccoli", "Bell peppers", "Tomatoes", "Lean meat"],
+    "note": "Take iron on an empty stomach with water or vitamin C juice for best absorption. Wait 2 hours after dairy."
+  },
+  "warfarin": {
+    "medicineName": "Warfarin (Blood Thinner)",
+    "avoid": ["Leafy greens (spinach, kale)", "Grapefruit", "Cranberry juice", "Alcohol", "Green tea"],
+    "recommended": ["Maintain consistent Vitamin K intake", "Stay hydrated"],
+    "note": "Maintain consistent Vitamin K intake rather than avoiding it entirely. Sudden changes can affect INR levels."
+  },
+  "metformin": {
+    "medicineName": "Metformin (Diabetes)",
+    "avoid": ["Excessive alcohol", "High-sugar foods", "White bread/refined carbs"],
+    "recommended": ["Whole grains", "Vegetables", "Lean proteins", "Low-glycemic foods"],
+    "note": "Take with meals to reduce GI side effects. A low-carb diet supports metformin efficacy."
+  },
+  "calcium": {
+    "medicineName": "Calcium Supplements",
+    "avoid": ["Iron supplements (take separately)", "High-oxalate foods like spinach when taken together", "Excessive caffeine"],
+    "recommended": ["Vitamin D foods (fortified milk, fatty fish)", "Magnesium-rich foods"],
+    "note": "Take calcium carbonate with food. Calcium citrate can be taken anytime."
+  },
+  "thyroid": {
+    "medicineName": "Thyroid Medication (Levothyroxine)",
+    "avoid": ["Soy products", "High-fiber foods (within 4 hours)", "Walnuts", "Coffee", "Grapefruit juice"],
+    "recommended": ["Take on empty stomach 30-60 min before breakfast", "Water only when taking"],
+    "note": "Consistency is key. Take at the same time daily, ideally 30-60 minutes before breakfast."
+  },
+  "antibiotic": {
+    "medicineName": "Antibiotics (General)",
+    "avoid": ["Alcohol", "Dairy products (some antibiotics)", "Acidic juices", "Antacids"],
+    "recommended": ["Probiotic foods (yogurt, kefir) - 2+ hours after dose", "Plenty of water"],
+    "note": "Complete the full course. Probiotics help maintain gut health during antibiotic therapy."
+  },
+  "aspirin": {
+    "medicineName": "Aspirin",
+    "avoid": ["Alcohol", "High-vitamin E foods in large amounts", "Ginkgo supplements"],
+    "recommended": ["Take with food or milk to reduce stomach upset", "Stay hydrated"],
+    "note": "Take with food to reduce gastrointestinal irritation."
+  },
+  "statin": {
+    "medicineName": "Statins (Cholesterol)",
+    "avoid": ["Grapefruit and grapefruit juice", "Excessive alcohol", "High-fat meals"],
+    "recommended": ["Heart-healthy diet rich in fruits and vegetables", "Omega-3 fatty acids", "Whole grains"],
+    "note": "Grapefruit can significantly increase statin levels in blood. Avoid it completely."
+  }
+}

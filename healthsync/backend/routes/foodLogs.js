@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const { getTodayLogs, getWeeklyLogs, addLog, deleteLog } = require('../controllers/foodLogController');
+const { protect } = require('../middleware/auth');
+router.use(protect);
+router.get('/today', getTodayLogs);
+router.get('/weekly', getWeeklyLogs);
+router.post('/', addLog);
+router.delete('/:id', deleteLog);
+module.exports = router;
