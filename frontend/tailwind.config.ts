@@ -15,6 +15,7 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+        ring: 'hsl(var(--ring))',
         success: 'hsl(var(--success))',
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar))',

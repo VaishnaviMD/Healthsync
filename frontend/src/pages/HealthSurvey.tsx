@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { surveyAPI } from '@/services/api';
+import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 
 const STEPS = [
@@ -28,7 +29,7 @@ const initialForm: Record<string, any> = {
 };
 
 const HealthSurvey = () => {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState(initialForm);
@@ -69,9 +70,11 @@ const HealthSurvey = () => {
         lastPeriodDate: form.lastPeriodDate || undefined,
       };
       await surveyAPI.submit(payload);
+      await refreshUser();
+      toast.success('Health survey completed! Your report is ready.');
       navigate('/profile');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to submit survey');
+      toast.error(err.response?.data?.message || 'Failed to submit survey');
     } finally {
       setLoading(false);
     }

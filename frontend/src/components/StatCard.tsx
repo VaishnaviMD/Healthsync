@@ -19,24 +19,27 @@ export function StatCard({ title, value, subtitle, icon: Icon, trend, trendValue
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1, ease: 'easeOut' }}
-      whileHover={{ y: -3, boxShadow: '0 8px 30px -12px hsl(var(--primary) / 0.25)' }}
-      className={cn('bg-card rounded-xl border border-border p-5 cursor-default', className)}
+      transition={{ duration: 0.4, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      className={cn(
+        'group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary/20',
+        className
+      )}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm text-muted-foreground font-medium">{title}</p>
-          <p className="text-2xl font-bold text-card-foreground mt-1">{value}</p>
-          {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</p>
+          <p className="mt-2 text-2xl font-bold tracking-tight text-foreground">{value}</p>
+          {subtitle && <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>}
           {trendValue && (
-            <p className={cn('text-xs font-medium mt-2', trend === 'up' && 'text-success', trend === 'down' && 'text-destructive', trend === 'neutral' && 'text-muted-foreground')}>
+            <p className={cn('mt-2 text-xs font-medium', trend === 'up' && 'text-emerald-600 dark:text-emerald-400', trend === 'down' && 'text-rose-600 dark:text-rose-400', trend === 'neutral' && 'text-muted-foreground')}>
               {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'} {trendValue}
             </p>
           )}
         </div>
-        <motion.div whileHover={{ rotate: 8, scale: 1.1 }} className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-          <Icon className="h-5 w-5 text-primary" />
-        </motion.div>
+        <div className="ml-3 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
+          <Icon className="h-6 w-6 text-primary" />
+        </div>
       </div>
     </motion.div>
   );
@@ -56,7 +59,7 @@ export function PageCard({ children, title, subtitle, className, action }: PageC
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className={cn('bg-card rounded-xl border border-border p-6', className)}
+      className={cn('rounded-2xl border border-border bg-card p-6 shadow-sm', className)}
     >
       {(title || action) && (
         <div className="flex items-center justify-between mb-4">

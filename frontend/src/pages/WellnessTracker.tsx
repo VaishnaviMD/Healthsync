@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { wellnessAPI } from '@/services/api';
+import { toast } from 'sonner';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
 
@@ -25,6 +26,7 @@ const WellnessTracker = () => {
     e.preventDefault(); setLoading(true);
     try {
       await wellnessAPI.add({ ...form, waterIntake: Number(form.waterIntake), sleepHours: Number(form.sleepHours) });
+      toast.success('Wellness log saved');
       setForm({ energyLevel: 'medium', waterIntake: '', sleepHours: '', notes: '' });
       setSuccess(true); setTimeout(() => setSuccess(false), 2500); load();
     } catch {} finally { setLoading(false); }

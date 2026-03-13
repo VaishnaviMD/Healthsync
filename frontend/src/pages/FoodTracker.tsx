@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Plus, Trash2 } from 'lucide-react';
 import { foodAPI } from '@/services/api';
+import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
 
@@ -32,13 +33,14 @@ const FoodTracker = () => {
     if (!form.name || !form.calories) return;
     try {
       await foodAPI.add({ ...form, calories: Number(form.calories), protein: Number(form.protein), carbs: Number(form.carbs), fats: Number(form.fats) });
+      toast.success('Meal logged');
       setForm({ name: '', calories: '', protein: '', carbs: '', fats: '', meal: 'Other' });
       load();
     } catch {}
   };
 
   const deleteEntry = async (id: string) => {
-    try { await foodAPI.delete(id); load(); } catch {}
+    try { await foodAPI.delete(id); toast.success('Entry removed'); load(); } catch { toast.error('Failed to delete'); }
   };
 
   const progress = Math.min((totals.calories / goal) * 100, 100);
