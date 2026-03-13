@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AppLayout } from '@/components/AppLayout';
 import { PageCard } from '@/components/StatCard';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { wellnessAPI } from '@/services/api';
 import { toast } from 'sonner';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
+import { Info } from 'lucide-react';
 
 const WellnessTracker = () => {
   const [logs, setLogs] = useState<any[]>([]);
@@ -41,9 +42,87 @@ const WellnessTracker = () => {
     water: l.waterIntake || 0,
   }));
 
+  const latest = logs[0];
+  const todayWater = latest?.waterIntake || 0;
+  const todaySleep = latest?.sleepHours || 0;
+  const recWater = 2.5; // litres
+  const recSleepMin = 7;
+  const recSleepMax = 9;
+
+  const waterProgress = Math.min((todayWater / recWater) * 100, 120);
+  const sleepProgress = Math.min((todaySleep / recSleepMin) * 100, 150);
+
+  const wellnessSuggestions = useMemo(() => {
+    const tips: string[] = [];
+    if (todayWater < recWater) {
+      const remaining = Math.max(0, recWater - todayWater);
+      tips.push(`Drink about ${remaining.toFixed(1)} more litres of water to reach today’s hydration target.`);
+    } else {
+      tips.push('Great job! You reached your daily hydration goal.');
+    }
+    if (todaySleep < recSleepMin) {
+      const remaining = Math.max(0, recSleepMin - todaySleep);
+      tips.push(`Aim for roughly ${remaining.toFixed(1)} more hours of sleep to reach the recommended 7–9 hours.`);
+    } else if (todaySleep > recSleepMax) {
+      tips.push('You slept more than 9 hours — check how you feel and aim for a consistent 7–9 hour window.');
+    } else {
+      tips.push('Your sleep duration is within the recommended 7–9 hour range.');
+    }
+    if (latest?.energyLevel === 'low') {
+      tips.push('Energy is low today — gentle movement, hydration, and a short break can help.');
+    } else if (latest?.energyLevel === 'high') {
+      tips.push('Energy is high — consider a short walk, stretch, or light workout to use it well.');
+    }
+    return tips;
+  }, [todayWater, todaySleep, latest]);
+
   return (
     <AppLayout title="Wellness Tracker">
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <PageCard
+          title="Daily Wellness Targets"
+          subtitle="Recommended minimums for general health"
+          action={<Info className="h-4 w-4 text-primary" />}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div>
+              <p className="font-semibold text-foreground mb-1">Water Intake</p>
+              <p className="text-muted-foreground text-xs">Recommended: 2–3 litres per day (about 8–12 glasses).</p>
+              <div className="mt-2 h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all"
+                  style={{ width: `${Math.min(waterProgress, 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Today: {todayWater.toFixed(1)} L / {recWater.toFixed(1)} L
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground mb-1">Sleep</p>
+              <p className="text-muted-foreground text-xs">Recommended: 7–9 hours of quality sleep.</p>
+              <div className="mt-2 h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-sky-500 rounded-full transition-all"
+                  style={{ width: `${Math.min(sleepProgress, 120)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Today: {todaySleep.toFixed(1)} h / {recSleepMin}–{recSleepMax} h
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground mb-1">Movement</p>
+              <p className="text-muted-foreground text-xs">
+                Aim for at least 30 minutes of light–moderate physical activity most days.
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Even short walks, stretching, or gentle yoga sessions count toward this total.
+              </p>
+            </div>
+          </div>
+        </PageCard>
+
         <PageCard title="Log Today's Wellness">
           {success && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 p-3 bg-success/10 border border-success/20 rounded-lg text-sm text-success">✓ Wellness log saved!</motion.div>}
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -112,20 +191,32 @@ const WellnessTracker = () => {
         )}
 
         {logs.length > 0 && (
-          <PageCard title="Recent Logs">
-            <div className="space-y-2">
-              {logs.slice(0, 5).map(log => (
-                <div key={log._id} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg text-sm">
-                  <span className="text-muted-foreground">{new Date(log.date).toLocaleDateString()}</span>
-                  <span className={`font-medium capitalize ${log.energyLevel === 'high' ? 'text-success' : log.energyLevel === 'low' ? 'text-destructive' : 'text-foreground'}`}>
-                    {log.energyLevel} energy
-                  </span>
-                  <span className="text-muted-foreground">💧 {log.waterIntake}L</span>
-                  <span className="text-muted-foreground">😴 {log.sleepHours}h</span>
-                </div>
-              ))}
-            </div>
-          </PageCard>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PageCard title="Recent Logs">
+              <div className="space-y-2">
+                {logs.slice(0, 5).map(log => (
+                  <div key={log._id} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg text-sm">
+                    <span className="text-muted-foreground">{new Date(log.date).toLocaleDateString()}</span>
+                    <span className={`font-medium capitalize ${log.energyLevel === 'high' ? 'text-success' : log.energyLevel === 'low' ? 'text-destructive' : 'text-foreground'}`}>
+                      {log.energyLevel} energy
+                    </span>
+                    <span className="text-muted-foreground">💧 {log.waterIntake}L</span>
+                    <span className="text-muted-foreground">😴 {log.sleepHours}h</span>
+                  </div>
+                ))}
+              </div>
+            </PageCard>
+            <PageCard title="Wellness Suggestions">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {wellnessSuggestions.map((tip, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </PageCard>
+          </div>
         )}
       </div>
     </AppLayout>

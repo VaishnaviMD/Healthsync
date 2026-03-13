@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
-import { User, Activity, Target, Scale, ClipboardList, Droplets, Moon, Zap } from 'lucide-react';
+import { User, Activity, Target, Scale, ClipboardList, Droplets, Info } from 'lucide-react';
 import { healthReportAPI } from '@/services/api';
 import { toast } from 'sonner';
 
@@ -59,6 +59,16 @@ const HealthProfile = () => {
     setLoading(true);
     try {
       await updateUser({ ...form, age: Number(form.age), height: Number(form.height), weight: Number(form.weight) });
+      // Re-fetch health report so BMI, calories, and score update
+      setReportLoading(true);
+      try {
+        const r = await healthReportAPI.get();
+        setReport(r.data);
+      } catch {
+        // ignore, profile still updated
+      } finally {
+        setReportLoading(false);
+      }
       toast.success('Profile updated successfully');
     } catch {
       toast.error('Failed to update profile');
@@ -114,7 +124,7 @@ const HealthProfile = () => {
                 { icon: Scale, label: 'BMI', value: (report?.bmi ?? bmi) || '—', sub: report?.bmiCategory || (bmi ? getBmiCategory(Number(bmi)).label : '—'), color: bmi ? getBmiCategory(Number(bmi)).color : 'text-muted-foreground' },
                 { icon: Activity, label: 'Daily Calories', value: dailyCalories.toLocaleString(), sub: 'kcal', color: 'text-primary' },
                 { icon: Target, label: 'Health Goal', value: form.healthGoal.replace('_', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()), sub: 'Current', color: 'text-foreground' },
-                { icon: Droplets, label: 'Hydration', value: report?.hydrationRecommendation ? '—' : '—', sub: report?.hydrationRecommendation?.slice(0, 30) + '...' || '—', color: 'text-blue-600' },
+                { icon: Droplets, label: 'Hydration', value: 'Goal', sub: report?.hydrationRecommendation || 'Aim for 2–3L/day', color: 'text-blue-600' },
               ].map((stat, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                   className="rounded-2xl border border-border bg-card p-4 shadow-sm"
@@ -151,7 +161,11 @@ const HealthProfile = () => {
           </div>
         )}
 
-        <PageCard title="Edit Profile">
+        <PageCard
+          title="Edit Health Profile"
+          subtitle="Update your details to keep BMI, calorie needs, and health score accurate"
+          action={<Info className="h-5 w-5 text-primary" />}
+        >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">

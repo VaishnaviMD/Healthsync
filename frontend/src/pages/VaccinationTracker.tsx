@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { PageCard } from "@/components/StatCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Edit2, Syringe } from "lucide-react";
+import { Plus, Trash2, Edit2, Syringe, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 const empty = { vaccineName: "", dateTaken: "", nextDose: "", notes: "" };
 
 const VaccinationTracker = () => {
+  const { user } = useAuth();
   const [vaccinations, setVaccinations] = useState<any[]>([]);
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState<string | null>(null);
@@ -42,6 +44,67 @@ const VaccinationTracker = () => {
 
   const isDue = (nextDose: string) => nextDose && new Date(nextDose) <= new Date(Date.now() + 30 * 86400000);
 
+  const age = user?.age || null;
+  const gender = user?.gender || '';
+
+  const ageGroup = useMemo(() => {
+    if (!age) return 'adult';
+    if (age < 13) return 'child';
+    if (age < 19) return 'teen';
+    if (age < 60) return 'adult';
+    return 'older';
+  }, [age]);
+
+  const recommendedVaccines = useMemo(() => {
+    const base: { label: string; items: string[] }[] = [];
+    if (ageGroup === 'child') {
+      base.push({
+        label: "Infants & Children",
+        items: [
+          "Hepatitis B, BCG, polio, and DTP as per national schedule.",
+          "Measles / MMR vaccines in early childhood.",
+        ],
+      });
+    }
+    if (ageGroup === 'teen') {
+      base.push({
+        label: "Teenagers & Young Adults",
+        items: [
+          "HPV vaccine (especially for girls and young women, as advised by your doctor).",
+          "Booster doses of tetanus and diphtheria.",
+        ],
+      });
+    }
+    if (ageGroup === 'adult' || ageGroup === 'older') {
+      base.push({
+        label: "Adults",
+        items: [
+          "Tetanus booster every 10 years.",
+          "Annual influenza vaccine, especially for those with chronic conditions.",
+        ],
+      });
+    }
+    if (gender === 'female') {
+      base.push({
+        label: "Women&apos;s Health",
+        items: [
+          "HPV vaccine (if in recommended age range, as advised by your doctor).",
+          "Regular breast and cervical cancer screening as per national guidelines.",
+        ],
+      });
+    }
+    if (!base.length) {
+      base.push({
+        label: "General",
+        items: [
+          "Follow your country&apos;s national immunization schedule.",
+          "People with chronic illnesses may need additional vaccines (e.g., pneumonia, hepatitis).",
+        ],
+      });
+    }
+    return base;
+  }, [ageGroup, gender]);
+
   return (
     <AppLayout title="Vaccination Tracker">
       <div className="max-w-3xl mx-auto space-y-6">
@@ -51,6 +114,25 @@ const VaccinationTracker = () => {
             <Plus className="h-4 w-4 mr-2" />Add Vaccine
           </Button>
         </div>
+
+        <PageCard title="Recommended Vaccines for Your Age Group" action={<Info className="h-4 w-4 text-primary" />}>
+          <p className="text-xs text-muted-foreground mb-3">
+            This section provides general educational guidance only. Always follow your doctor&apos;s advice and your
+            country&apos;s official immunization schedule.
+          </p>
+          <div className="space-y-3 text-xs text-muted-foreground">
+            {recommendedVaccines.map(section => (
+              <div key={section.label}>
+                <p className="font-semibold text-foreground mb-1" dangerouslySetInnerHTML={{ __html: section.label }} />
+                <ul className="list-disc list-inside space-y-1">
+                  {section.items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </PageCard>
 
         <AnimatePresence>
           {showForm && (
