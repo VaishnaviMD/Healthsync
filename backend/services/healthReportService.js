@@ -104,7 +104,7 @@ async function generateHealthReport(userId) {
   exerciseSuggestions.push('Include flexibility exercises (stretching, yoga)');
   exerciseSuggestions.push('Find activities you enjoy for long-term consistency');
 
-  const summary = `${user.name}, your HealthSync score is ${healthScore}/100. ${bmiCategory ? `Your BMI (${bmi}) is ${bmiCategory}.` : ''} Daily calorie target: ${dailyCalories} kcal. ${recommendations[0] || 'Keep up the good work!'}`;
+  const summary = `${user.name}, your Medora health score is ${healthScore}/100. ${bmiCategory ? `Your BMI (${bmi}) is ${bmiCategory}.` : ''} Daily calorie target: ${dailyCalories} kcal. ${recommendations[0] || 'Keep up the good work!'}`;
 
   const report = await HealthReport.findOneAndUpdate(
     { user: userId },

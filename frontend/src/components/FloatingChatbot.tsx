@@ -15,7 +15,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: 1,
     role: 'assistant',
-    content: "Hello! 👋 I'm your HealthSync AI assistant. I can help with questions about medications, nutrition, wellness, and women's health.\n\n⚠️ Important: I provide educational information only — not medical advice. Always consult a healthcare professional for personal medical decisions.",
+    content: "Hello! 👋 I'm your Medora AI assistant. I can help with questions about medications, nutrition, wellness, and women's health.\n\n⚠️ Important: I provide educational information only — not medical advice. Always consult a healthcare professional for personal medical decisions.",
     timestamp: new Date(),
   }
 ];
@@ -111,7 +111,7 @@ export function FloatingChatbot() {
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="font-semibold text-white text-sm">HealthSync AI</p>
+                <p className="font-semibold text-white text-sm">Medora AI</p>
                 <p className="text-white/80 text-xs">Educational health assistant</p>
               </div>
               <div className="ml-auto flex items-center gap-1.5">

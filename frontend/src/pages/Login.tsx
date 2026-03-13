@@ -46,7 +46,7 @@ const Login = () => {
             <Activity className="h-6 w-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
-          <p className="text-sm text-muted-foreground mt-1">Sign in to your HealthSync account</p>
+          <p className="text-sm text-muted-foreground mt-1">Sign in to your Medora account</p>
         </div>
 
         {error && (

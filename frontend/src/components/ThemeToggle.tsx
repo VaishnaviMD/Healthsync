@@ -8,11 +8,11 @@ export function ThemeToggle() {
   useEffect(() => {
     if (dark) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
-    localStorage.setItem('healthsync_theme', dark ? 'dark' : 'light');
+    localStorage.setItem('medora_theme', dark ? 'dark' : 'light');
   }, [dark]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('healthsync_theme');
+    const saved = localStorage.getItem('medora_theme');
     if (saved === 'dark') { setDark(true); document.documentElement.classList.add('dark'); }
   }, []);
 

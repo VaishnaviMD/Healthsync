@@ -1,4 +1,4 @@
-# HealthSync — Smart Medication & Nutrition Companion
+# Medora — Smart Medication & Nutrition Companion
 
 A full-stack healthcare web platform for managing medications, nutrition, wellness, vaccinations, women's health, and AI-powered health assistance.
 
@@ -267,4 +267,4 @@ Frontend runs on: `http://localhost:5173`
 
 ## Important Disclaimer
 
-HealthSync provides **educational health information only**. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician or qualified health provider for personal medical decisions.
+Medora provides **educational health information only**. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician or qualified health provider for personal medical decisions.

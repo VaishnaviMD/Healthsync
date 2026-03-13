@@ -19,12 +19,12 @@ const Settings = () => (
         </div>
       </PageCard>
 
-      <PageCard title="About HealthSync" action={<Info className="h-5 w-5 text-primary" />}>
+      <PageCard title="About Medora" action={<Info className="h-5 w-5 text-primary" />}>
         <div className="space-y-2 text-sm text-muted-foreground">
           <p><strong className="text-foreground">Version:</strong> 1.0.0</p>
           <p><strong className="text-foreground">Stack:</strong> React · Node.js · MongoDB · OpenAI</p>
           <p className="text-xs mt-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg p-3">
-            ⚠️ HealthSync provides educational health information only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider.
+            ⚠️ Medora provides educational health information only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider.
           </p>
         </div>
       </PageCard>

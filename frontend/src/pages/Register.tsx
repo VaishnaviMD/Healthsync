@@ -45,8 +45,8 @@ const Register = () => {
           <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-3">
             <Activity className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Create your account</h1>
-          <p className="text-sm text-muted-foreground mt-1">Start your health journey with HealthSync</p>
+          <h1 className="text-2xl font-bold text-foreground">Create your Medora account</h1>
+          <p className="text-sm text-muted-foreground mt-1">Start your health journey with Medora</p>
         </div>
 
         {error && (

@@ -14,7 +14,7 @@ interface Message {
 const INITIAL_MESSAGE: Message = {
   id: 1,
   role: 'assistant',
-  content: "Hello! I'm your HealthSync AI assistant. I provide educational health information about medications, nutrition, wellness, and women's health.\n\n⚠️ Important: My responses are for educational purposes only. Always consult a qualified healthcare professional for personal medical decisions.",
+  content: "Hello! I'm your Medora AI assistant. I provide educational health information about medications, nutrition, wellness, and women's health.\n\n⚠️ Important: My responses are for educational purposes only. Always consult a qualified healthcare professional for personal medical decisions.",
 };
 
 const quickPrompts = [

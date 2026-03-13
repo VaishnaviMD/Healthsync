@@ -2,7 +2,7 @@ const OpenAI = require("openai");
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const SYSTEM_PROMPT = `You are HealthSync AI Assistant, a helpful health information companion. 
+const SYSTEM_PROMPT = `You are Medora AI Assistant, a helpful health information companion. 
 
 IMPORTANT RULES:
 - You provide EDUCATIONAL INFORMATION ONLY — not medical advice or diagnosis
