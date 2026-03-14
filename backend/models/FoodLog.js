@@ -7,7 +7,8 @@ const foodLogSchema = new mongoose.Schema({
   protein: { type: Number, default: 0 },
   carbs: { type: Number, default: 0 },
   fats: { type: Number, default: 0 },
-  meal: { type: String, enum: ['Breakfast','Lunch','Snack','Dinner','Other'], default: 'Other' },
+  fiber: { type: Number, default: 0 },
+  meal: { type: String, enum: ['Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Snack', 'Other'], default: 'Other' },
   date: { type: Date, default: Date.now },
 }, { timestamps: true });
 

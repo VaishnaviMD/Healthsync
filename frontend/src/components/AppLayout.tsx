@@ -4,8 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AppSidebar } from '@/components/AppSidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { FloatingChatbot } from '@/components/FloatingChatbot';
+import { MedicineReminderPopup } from '@/components/MedicineReminderPopup';
 import { Bell, Search } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useMedicineReminderContext } from '@/context/MedicineReminderContext';
+import { toast } from 'sonner';
 
 interface AppLayoutProps { children: ReactNode; title?: string; }
 
@@ -21,6 +24,12 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   const { user } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const reminderCtx = useMedicineReminderContext();
+  const popupReminder = reminderCtx?.popupReminder ?? null;
+  const dismissPopup = reminderCtx?.dismissPopup ?? (() => {});
+  const snoozePopup = reminderCtx?.snoozePopup ?? (() => {});
+  const markTakenFromPopup = reminderCtx?.markTakenFromPopup ?? (async () => {});
+  const markSkippedFromPopup = reminderCtx?.markSkippedFromPopup ?? (async () => {});
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -101,6 +110,21 @@ export function AppLayout({ children, title }: AppLayoutProps) {
         </main>
       </div>
       <FloatingChatbot />
+      {reminderCtx && (
+      <MedicineReminderPopup
+        reminder={popupReminder}
+        onMarkTaken={async () => {
+          await markTakenFromPopup();
+          toast.success('Marked as taken');
+        }}
+        onSkip={async () => {
+          await markSkippedFromPopup();
+          toast.success('Dose skipped');
+        }}
+        onSnooze={snoozePopup}
+        onDismiss={dismissPopup}
+      />
+      )}
     </div>
   );
 }

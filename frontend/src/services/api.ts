@@ -34,14 +34,27 @@ export const authAPI = {
 export const medicineAPI = {
   getAll: () => api.get('/medicines'),
   getAdherence: () => api.get('/medicines/adherence'),
+  getAdherenceChart: (days?: number) => api.get('/medicines/adherence/chart', { params: { days: days || 7 } }),
+  getReminders: () => api.get('/medicines/reminders'),
+  getMissedDoses: () => api.get('/medicines/missed'),
+  getHistory: (date?: string) => api.get('/medicines/history', { params: date ? { date } : {} }),
+  getLowStock: () => api.get('/medicines/low-stock'),
   add: (data: object) => api.post('/medicines', data),
   update: (id: string, data: object) => api.put(`/medicines/${id}`, data),
   delete: (id: string) => api.delete(`/medicines/${id}`),
+  markTaken: (data: { medicineId: string; scheduledDate: string; scheduledTime?: string; markedLate?: boolean }) =>
+    api.post('/medicines/mark-taken', data),
+  markSkipped: (data: { medicineId: string; scheduledDate: string; scheduledTime?: string }) =>
+    api.post('/medicines/mark-skipped', data),
 };
 
 export const foodAPI = {
   getToday: () => api.get('/food/today'),
   getWeekly: () => api.get('/food/weekly'),
+  getInsights: () => api.get('/food/insights'),
+  search: (query: string) => api.get('/food/search', { params: { q: query } }),
+  analyzeImage: (imageBase64: string) => api.post('/food/analyze-image', { image: imageBase64 }),
+  parseIngredients: (ingredients: string[] | string) => api.post('/food/parse-ingredients', { ingredients }),
   add: (data: object) => api.post('/food', data),
   delete: (id: string) => api.delete(`/food/${id}`),
 };
